@@ -5,7 +5,7 @@ This template should help get you started developing with Vue 3 in Vite.
 ## 🌐 Live Demo
 
 The application is deployed on GitHub Pages:  
-👉 [task-management-app](https://alexandermezhenskyi.github.io/task-management-app)
+👉 [task-management-app](https://alexandermezhenskyi.github.io/task-management-app/)
 
 ## 🚀 Getting Started
 
