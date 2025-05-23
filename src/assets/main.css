@@ -1,20 +1,63 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 32px;
   font-weight: normal;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+
+  @media (min-width: 640px) {
+    max-width: var(--container-sm);
+  }
+  @media (min-width: 768px) {
+    max-width: var(--container-md);
+  }
+  @media (min-width: 1024px) {
+    max-width: var(--container-lg);
+  }
+  @media (min-width: 1280px) {
+    max-width: var(--container-xl);
+  }
+  @media (min-width: 1536px) {
+    max-width: var(--container-2xl);
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
 }
 
 a {
   text-decoration: none;
-  transition: 0.4s;
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+  transition: 0.2s;
 }
