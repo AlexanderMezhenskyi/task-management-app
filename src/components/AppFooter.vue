@@ -4,9 +4,9 @@ const year = new Date().getFullYear()
 
 <template>
   <footer class="footer text-center">
-    <div class="container">
+    <section class="container">
       <div>&copy; {{ year }}</div>
-    </div>
+    </section>
   </footer>
 </template>
 

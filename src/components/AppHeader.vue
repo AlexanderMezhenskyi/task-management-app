@@ -1,17 +1,38 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import BaseButton from '@/components/BaseButton.vue'
+import AuthorizationModal from '@/components/AuthorizationModal.vue'
+import { ref } from 'vue'
+
+const showLogin = ref(false)
+const openLogin = () => (showLogin.value = true)
+const closeLogin = () => (showLogin.value = false)
+</script>
 
 <template>
   <header class="header">
-    <div class="container">
-      <nav class="nav flex align-center justify-between">
+    <section class="container">
+      <div class="flex justify-between align-center">
         <RouterLink to="/" class="title-link flex align-center"> Task Management </RouterLink>
+        <div class="flex align-center">
+          <nav class="nav flex align-center justify-right">
+            <ul class="nav-links flex">
+              <li><RouterLink to="/">Home</RouterLink></li>
+              <li><RouterLink to="/projects">Projects</RouterLink></li>
+            </ul>
+          </nav>
+          <BaseButton
+            class="sign-in-button"
+            size="sm"
+            :bg-color="'var(--color-primary-dark)'"
+            @click-button="openLogin"
+          >
+            Sign in
+          </BaseButton>
+        </div>
+      </div>
 
-        <ul class="nav-links flex">
-          <li><RouterLink to="/">Home</RouterLink></li>
-          <li><RouterLink to="/projects">Projects</RouterLink></li>
-        </ul>
-      </nav>
-    </div>
+      <AuthorizationModal v-if="showLogin" @close="closeLogin" />
+    </section>
   </header>
 </template>
 
@@ -43,5 +64,9 @@
     color: var(--color-text-inverted);
     border-bottom: 2px solid var(--color-text-inverted);
   }
+}
+
+.sign-in-button {
+  margin-left: 24px;
 }
 </style>

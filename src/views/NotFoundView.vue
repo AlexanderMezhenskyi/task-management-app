@@ -7,11 +7,11 @@ const goHomeView = () => router.push({ name: 'home' })
 </script>
 
 <template>
-  <div class="not-found container flex column align-center">
+  <section class="not-found container flex column align-center">
     <h1>404 – Page Not Found</h1>
     <p>Sorry, the page you are looking for does not exist.</p>
     <BaseButton @click-button="goHomeView">Back to Home</BaseButton>
-  </div>
+  </section>
 </template>
 
 <style scoped>

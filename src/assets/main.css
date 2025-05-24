@@ -53,8 +53,16 @@
   justify-content: center;
 }
 
+.justify-right {
+  justify-content: right;
+}
+
 .text-center {
   text-align: center;
+}
+
+.cursor {
+  cursor: pointer;
 }
 
 a {

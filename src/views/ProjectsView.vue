@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ProjectList from '@/components/ProjectList.vue'
+</script>
 
 <template>
-  <div>Projects</div>
+  <ProjectList />
 </template>
