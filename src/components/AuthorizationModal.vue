@@ -8,10 +8,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div
-    class="auth-modal flex justify-center align-center"
-    @click.self="$emit('close')"
-  >
+  <div class="auth-modal flex justify-center align-center" @click.self="$emit('close')">
     <div class="auth-modal-content">
       <div class="auth-modal-header flex justify-between align-center">
         <h2>Sign in</h2>
@@ -25,10 +22,7 @@ defineEmits<{
           <CloseIcon />
         </BaseButton>
       </div>
-      <form
-        class="flex column"
-        @submit.prevent="$emit('close')"
-      >
+      <form class="flex column" @submit.prevent="$emit('close')">
         <input type="email" placeholder="john.doe@example.com" required />
         <input type="password" placeholder="password" required />
         <BaseButton type="submit">Login</BaseButton>
@@ -68,7 +62,9 @@ input {
   outline: none;
   background-color: var(--color-surface);
   color: var(--color-text);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 
   &:focus {
     border-color: var(--color-primary);

@@ -27,11 +27,7 @@ const goTo = (id: string) => {
       <div></div>
     </div>
 
-    <div
-      v-for="project in projects"
-      :key="project.id"
-      class="project-row align-center"
-    >
+    <div v-for="project in projects" :key="project.id" class="project-row align-center">
       <div class="project-name">{{ project.name }}</div>
       <div class="project-date">{{ project.dueDate }}</div>
       <div class="project-actions">

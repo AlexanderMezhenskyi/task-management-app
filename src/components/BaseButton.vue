@@ -14,7 +14,7 @@ const {
   variant = 'primary',
   size = 'md',
   textColor = '',
-  bgColor = ''
+  bgColor = '',
 } = defineProps<BaseButtonProps>()
 
 defineEmits<{
@@ -22,11 +22,7 @@ defineEmits<{
 }>()
 
 const baseClass = computed(() => {
-  return [
-    'base-button',
-    `variant-${variant}`,
-    `size-${size}`,
-  ]
+  return ['base-button', `variant-${variant}`, `size-${size}`]
 })
 
 const inlineStyle = computed(() => ({
@@ -36,12 +32,7 @@ const inlineStyle = computed(() => ({
 </script>
 
 <template>
-  <button
-    :type="type"
-    :class="baseClass"
-    :style="inlineStyle"
-    @click="$emit('clickButton')"
-  >
+  <button :type="type" :class="baseClass" :style="inlineStyle" @click="$emit('clickButton')">
     <slot />
   </button>
 </template>
