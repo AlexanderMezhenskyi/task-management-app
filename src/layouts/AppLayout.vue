@@ -7,9 +7,7 @@ import AppFooter from '@/components/AppFooter.vue'
   <div class="app-layout flex column">
     <AppHeader />
     <main class="main">
-      <section class="container">
-        <slot />
-      </section>
+      <slot />
     </main>
     <AppFooter />
   </div>

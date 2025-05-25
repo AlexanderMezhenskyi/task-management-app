@@ -1,21 +1,18 @@
 <script setup lang="ts">
-import { useId } from 'vue'
+import { useRouter } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
+import type { Project} from '@/types/project'
 
-interface Project {
-  id: string
-  name: string
-  dueDate: string
-}
+const router = useRouter()
 
 const projects: Project[] = [
-  { id: useId(), name: 'Website redesign', dueDate: '2025-06-10' },
-  { id: useId(), name: 'Mobile app launch', dueDate: '2025-07-01' },
-  { id: useId(), name: 'Marketing campaign', dueDate: '2025-05-30' },
+  { id: 1, name: 'Website redesign', dueDate: '2025-06-10' },
+  { id: 2, name: 'Mobile app launch', dueDate: '2025-07-01' },
+  { id: 3, name: 'Marketing campaign', dueDate: '2025-05-30' },
 ]
 
-const goTo = (id: string) => {
-  console.log('View project', id)
+const goToProjectDetails = (id: number) => {
+  router.push({ name: 'projectDetails', params: { id } })
 }
 </script>
 
@@ -31,7 +28,7 @@ const goTo = (id: string) => {
       <div class="project-name">{{ project.name }}</div>
       <div class="project-date">{{ project.dueDate }}</div>
       <div class="project-actions">
-        <BaseButton @click-button="goTo(project.id)">View</BaseButton>
+        <BaseButton @click-button="goToProjectDetails(project.id)">View</BaseButton>
       </div>
     </div>
   </section>
