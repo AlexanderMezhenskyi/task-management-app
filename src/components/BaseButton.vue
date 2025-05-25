@@ -7,6 +7,7 @@ interface BaseButtonProps {
   size?: 'sm' | 'md' | 'lg'
   textColor?: string
   bgColor?: string
+  noPadding?: boolean
 }
 
 const {
@@ -15,6 +16,7 @@ const {
   size = 'md',
   textColor = '',
   bgColor = '',
+  noPadding = false,
 } = defineProps<BaseButtonProps>()
 
 defineEmits<{
@@ -22,7 +24,7 @@ defineEmits<{
 }>()
 
 const baseClass = computed(() => {
-  return ['base-button', `variant-${variant}`, `size-${size}`]
+  return ['base-button', `variant-${variant}`, `size-${size}`, { 'no-padding': noPadding }]
 })
 
 const inlineStyle = computed(() => ({
@@ -94,5 +96,8 @@ const inlineStyle = computed(() => ({
 .variant-ghost {
   background-color: transparent;
   color: var(--color-primary);
+}
+.no-padding {
+  padding: 0;
 }
 </style>

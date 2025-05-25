@@ -14,6 +14,7 @@ defineEmits<{
         <h2>Sign in</h2>
         <BaseButton
           class="cursor"
+          no-padding
           size="sm"
           variant="ghost"
           :text-color="'var(--color-text)'"
