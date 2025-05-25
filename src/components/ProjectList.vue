@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
-import type { Project} from '@/types/project'
+import { formatDate } from '@/utils/helpers.ts'
+import type { Project } from '@/types/project'
 
 const router = useRouter()
 
@@ -26,7 +27,7 @@ const goToProjectDetails = (id: number) => {
 
     <div v-for="project in projects" :key="project.id" class="project-row align-center">
       <div class="project-name">{{ project.name }}</div>
-      <div class="project-date">{{ project.dueDate }}</div>
+      <div class="project-date">{{ formatDate(project.dueDate) }}</div>
       <div class="project-actions">
         <BaseButton @click-button="goToProjectDetails(project.id)">View</BaseButton>
       </div>
