@@ -14,7 +14,7 @@ const closeLogin = () => (showLogin.value = false)
       <div class="flex justify-between align-center">
         <RouterLink to="/" class="title-link flex align-center"> Task Management </RouterLink>
         <div class="flex align-center">
-          <nav class="nav flex align-center justify-right">
+          <nav class="nav flex align-center justify-end">
             <ul class="nav-links flex">
               <li><RouterLink to="/">Home</RouterLink></li>
               <li><RouterLink to="/projects">Projects</RouterLink></li>

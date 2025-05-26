@@ -17,7 +17,7 @@ defineProps<{
       <div>{{ task.priority }}</div>
       <div>{{ task.status }}</div>
       <div>{{ formatDate(task.dueDate) }}</div>
-      <div class="task-actions flex justify-right">
+      <div class="task-actions flex justify-end">
         <BaseButton
           size="sm"
           variant="ghost"
