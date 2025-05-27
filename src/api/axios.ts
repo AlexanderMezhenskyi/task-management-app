@@ -26,10 +26,7 @@ api.interceptors.response.use(
     }
 
     if (status >= 500) {
-      showToast(
-        `${message}` || 'Server error occurred. Try again later.',
-        'error',
-      )
+      showToast(`${message}` || 'Server error occurred. Try again later.', 'error')
     }
 
     return Promise.reject(error)
