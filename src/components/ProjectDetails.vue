@@ -10,6 +10,8 @@ import TaskFilters from '@/components/TaskFilters.vue'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskTable from '@/components/TaskTable.vue'
 import { formatDate } from '@/utils/helpers.ts'
+import type { SortField } from '@/types/sort'
+import type { SortOption } from '@/types/sort'
 import type { Task } from '@/types/task'
 
 const route = useRoute()
@@ -23,6 +25,12 @@ const isLoading = ref(false)
 const isTaskModalOpen = ref(false)
 const editingTask = ref<Task | null>(null)
 const filters = ref({ priority: '', status: '' })
+const priorityOrder = ['High', 'Medium', 'Low']
+const statusOrder = ['Completed', 'In Progress', 'Pending']
+const sort = ref<SortOption>({
+  field: '',
+  direction: 'asc',
+})
 
 onMounted(() => {
   fetchTasks()
@@ -34,6 +42,26 @@ const filteredTasks = computed(() => {
     const matchesStatus = !filters.value.status || task.status === filters.value.status
     return matchesPriority && matchesStatus
   })
+})
+
+const sortedTasks = computed(() => {
+  const tasks = [...filteredTasks.value]
+
+  if (sort.value.field === 'priority') {
+    tasks.sort((a, b) => {
+      const aIndex = priorityOrder.indexOf(a.priority)
+      const bIndex = priorityOrder.indexOf(b.priority)
+      return sort.value.direction === 'asc' ? aIndex - bIndex : bIndex - aIndex
+    })
+  } else if (sort.value.field === 'status') {
+    tasks.sort((a, b) => {
+      const aIndex = statusOrder.indexOf(a.status)
+      const bIndex = statusOrder.indexOf(b.status)
+      return sort.value.direction === 'asc' ? aIndex - bIndex : bIndex - aIndex
+    })
+  }
+
+  return tasks
 })
 
 const projectId = Number(route.params.id)
@@ -116,6 +144,15 @@ const fetchTasks = async () => {
 const updateFilters = (payload: typeof filters.value) => {
   filters.value = payload
 }
+
+const toggleSort = (field: SortField) => {
+  if (sort.value.field === field) {
+    sort.value.direction = sort.value.direction === 'asc' ? 'desc' : 'asc'
+  } else {
+    sort.value.field = field
+    sort.value.direction = 'asc'
+  }
+}
 </script>
 
 <template>
@@ -147,10 +184,12 @@ const updateFilters = (payload: typeof filters.value) => {
     </div>
 
     <TaskTable
-      v-if="filteredTasks.length > 0"
-      :tasks="filteredTasks"
+      v-if="sortedTasks.length > 0"
+      :sort="sort"
+      :tasks="sortedTasks"
       @edit-task="openEditModal"
       @remove-task="removeTask"
+      @toggle-sort="toggleSort"
     />
     <EmptyState
       v-else

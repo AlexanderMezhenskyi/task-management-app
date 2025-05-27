@@ -18,7 +18,7 @@ const emit = defineEmits<{
 <template>
   <div class="task-card flex column">
     <div class="task-row align-center">
-      <div>{{ task.id }} - {{ task.title }}</div>
+      <div>{{ task.title }}</div>
       <div>{{ task.priority }}</div>
       <div>{{ task.status }}</div>
       <div>{{ formatDate(task.dueDate) }}</div>

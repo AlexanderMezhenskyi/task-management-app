@@ -3,8 +3,6 @@ import { defineStore } from 'pinia'
 import { taskApi } from '@/api/taskApi.ts'
 import type { Task } from '@/types/task'
 
-let idCounter = 1
-
 export const useTaskStore = defineStore(
   'tasks',
   () => {
@@ -12,7 +10,7 @@ export const useTaskStore = defineStore(
 
     // Sync
     const createTask = (task: Omit<Task, 'id'>): Task => {
-      const newTask = { ...task, id: idCounter++ }
+      const newTask = { ...task, id: Date.now() }
       tasks.value.push(newTask)
       return newTask
     }
