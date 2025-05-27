@@ -8,6 +8,11 @@ import type { Task } from '@/types/task'
 defineProps<{
   task: Task
 }>()
+
+const emit = defineEmits<{
+  (e: 'edit-task'): void
+  (e: 'remove-task'): void
+}>()
 </script>
 
 <template>
@@ -23,7 +28,7 @@ defineProps<{
           variant="ghost"
           no-padding
           :text-color="'var(--color-text)'"
-          @click-button="() => {}"
+          @click-button="emit('edit-task')"
         >
           <EditIcon />
         </BaseButton>
@@ -32,7 +37,7 @@ defineProps<{
           variant="ghost"
           no-padding
           :text-color="'var(--color-text)'"
-          @click-button="() => {}"
+          @click-button="emit('remove-task')"
         >
           <RemoveIcon />
         </BaseButton>

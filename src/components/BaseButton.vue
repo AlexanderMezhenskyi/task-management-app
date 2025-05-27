@@ -49,6 +49,13 @@ const inlineStyle = computed(() => ({
   cursor: pointer;
   border-radius: 6px;
   transition: background-color 0.2s ease;
+
+  &:disabled {
+    background-color: var(--color-secondary);
+    color: var(--color-text-light);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 .size-sm {
@@ -70,7 +77,7 @@ const inlineStyle = computed(() => ({
   background-color: var(--color-primary);
   color: var(--color-text-inverted);
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--color-primary-dark);
   }
 }
@@ -79,7 +86,7 @@ const inlineStyle = computed(() => ({
   background-color: var(--color-secondary);
   color: var(--color-text);
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--color-secondary-dark);
   }
 }
@@ -88,7 +95,7 @@ const inlineStyle = computed(() => ({
   background-color: var(--color-error);
   color: var(--color-white);
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--color-error-dark);
   }
 }

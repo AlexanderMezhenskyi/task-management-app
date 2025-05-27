@@ -2,35 +2,14 @@
 import TaskItem from '@/components/TaskItem.vue'
 import type { Task } from '@/types/task'
 
-const tasks: Task[] = [
-  {
-    id: 1,
-    title: 'Setup UI',
-    priority: 'High',
-    status: 'In Progress',
-    dueDate: '2025-05-25',
-    description: 'Setup UI',
-    projectId: 1,
-  },
-  {
-    id: 2,
-    title: 'Create API mocks',
-    priority: 'Medium',
-    status: 'Pending',
-    dueDate: '2025-05-25',
-    description: 'Create API mocks',
-    projectId: 2,
-  },
-  {
-    id: 3,
-    title: 'Add tests',
-    priority: 'Low',
-    status: 'Completed',
-    dueDate: '2025-05-25',
-    description: 'Add tests',
-    projectId: 3,
-  },
-]
+defineProps<{
+  tasks: Task[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'edit-task', task: Task): void
+  (e: 'remove-task', id: number): void
+}>()
 </script>
 
 <template>
@@ -44,7 +23,11 @@ const tasks: Task[] = [
     </div>
 
     <div v-for="task in tasks" :key="task.id">
-      <TaskItem :task="task" />
+      <TaskItem
+        :task="task"
+        @edit-task="emit('edit-task', task)"
+        @remove-task="emit('remove-task', task.id)"
+      />
     </div>
   </div>
 </template>

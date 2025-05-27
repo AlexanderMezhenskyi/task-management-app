@@ -23,7 +23,7 @@ export const taskApi = {
   },
 
   async removeTask(id: number): Promise<Task> {
-    const res =  await api.delete(`/tasks/${id}`)
+    const res = await api.delete(`/tasks/${id}`)
     return res.data
   },
 }
