@@ -5,6 +5,7 @@ import { useTaskStore } from '@/stores/taskStore.ts'
 import AppLoader from '@/components/AppLoader.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import CircleArrowLeftIcon from '@/components/icons/CircleArrowLeftIcon.vue'
+import EmptyState from '@/components/EmptyState.vue'
 import TaskFilters from '@/components/TaskFilters.vue'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskTable from '@/components/TaskTable.vue'
@@ -14,12 +15,8 @@ import type { Task } from '@/types/task'
 const route = useRoute()
 const router = useRouter()
 
-const {
-  fetchTasksByProjectIdAsync,
-  createTaskAsync,
-  updateTaskAsync,
-  removeTaskAsync
-} = useTaskStore()
+const { fetchTasksByProjectIdAsync, createTaskAsync, updateTaskAsync, removeTaskAsync } =
+  useTaskStore()
 
 const tasks = ref<Task[]>([])
 const isLoading = ref(false)
@@ -137,9 +134,15 @@ const fetchTasks = async () => {
     </div>
 
     <TaskTable
+      v-if="tasks.length > 0"
       :tasks="tasks"
       @edit-task="openEditModal"
       @remove-task="removeTask"
+    />
+    <EmptyState
+      v-else
+      title="No tasks yet"
+      message="Start by creating your first task for this project."
     />
 
     <TaskModal

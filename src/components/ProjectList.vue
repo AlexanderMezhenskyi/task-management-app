@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
+import EmptyState from '@/components/EmptyState.vue'
 import { formatDate } from '@/utils/helpers.ts'
 import type { Project } from '@/types/project'
 
@@ -18,20 +19,24 @@ const goToProjectDetails = (id: number) => {
 </script>
 
 <template>
-  <section class="project-list container flex column">
-    <div class="project-header align-center">
-      <div>Project name</div>
-      <div>Due date</div>
-      <div></div>
-    </div>
+  <section class="container">
+    <div v-if="projects.length > 0" class="project-list flex column">
+      <div class="project-header align-center">
+        <div>Project name</div>
+        <div>Due date</div>
+        <div></div>
+      </div>
 
-    <div v-for="project in projects" :key="project.id" class="project-row align-center">
-      <div class="project-name">{{ project.name }}</div>
-      <div class="project-date">{{ formatDate(project.dueDate) }}</div>
-      <div class="project-actions">
-        <BaseButton @click-button="goToProjectDetails(project.id)">View</BaseButton>
+      <div v-for="project in projects" :key="project.id" class="project-row align-center">
+        <div class="project-name">{{ project.name }}</div>
+        <div class="project-date">{{ formatDate(project.dueDate) }}</div>
+        <div class="project-actions">
+          <BaseButton @click-button="goToProjectDetails(project.id)">View</BaseButton>
+        </div>
       </div>
     </div>
+
+    <EmptyState v-else title="No projects yet" message="Start by creating your first project." />
   </section>
 </template>
 
@@ -43,7 +48,7 @@ const goToProjectDetails = (id: number) => {
 .project-row,
 .project-header {
   display: grid;
-  grid-template-columns: 1fr 150px 100px;
+  grid-template-columns: 1fr 1fr 100px;
   padding: 16px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
