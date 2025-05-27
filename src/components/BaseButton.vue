@@ -20,7 +20,7 @@ const {
 } = defineProps<BaseButtonProps>()
 
 defineEmits<{
-  (e: 'clickButton'): void
+  (e: 'click-button'): void
 }>()
 
 const baseClass = computed(() => {
@@ -34,7 +34,7 @@ const inlineStyle = computed(() => ({
 </script>
 
 <template>
-  <button :type="type" :class="baseClass" :style="inlineStyle" @click="$emit('clickButton')">
+  <button :type="type" :class="baseClass" :style="inlineStyle" @click="$emit('click-button')">
     <slot />
   </button>
 </template>

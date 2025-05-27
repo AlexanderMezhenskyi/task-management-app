@@ -4,14 +4,14 @@ import BaseButton from '@/components/BaseButton.vue'
 import { TaskPriorities, TaskStatuses } from '@/types/task'
 
 const emit = defineEmits<{
-  (e: 'updateFilters', filters: { priority: string; status: string }): void
+  (e: 'update-filters', filters: { priority: string; status: string }): void
 }>()
 
 const selectedPriority = ref('')
 const selectedStatus = ref('')
 
 watch([selectedPriority, selectedStatus], () => {
-  emit('updateFilters', {
+  emit('update-filters', {
     priority: selectedPriority.value,
     status: selectedStatus.value,
   })
