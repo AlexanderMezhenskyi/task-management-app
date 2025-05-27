@@ -6,6 +6,7 @@ import AppLoader from '@/components/AppLoader.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import CircleArrowLeftIcon from '@/components/icons/CircleArrowLeftIcon.vue'
 import EmptyState from '@/components/EmptyState.vue'
+import ErrorBanner from '@/components/ErrorBanner.vue'
 import TaskFilters from '@/components/TaskFilters.vue'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskTable from '@/components/TaskTable.vue'
@@ -27,10 +28,8 @@ const editingTask = ref<Task | null>(null)
 const filters = ref({ priority: '', status: '' })
 const priorityOrder = ['High', 'Medium', 'Low']
 const statusOrder = ['Completed', 'In Progress', 'Pending']
-const sort = ref<SortOption>({
-  field: '',
-  direction: 'asc',
-})
+const sort = ref<SortOption>({ field: '', direction: 'asc' })
+const error = ref('')
 
 onMounted(() => {
   fetchTasks()
@@ -91,7 +90,7 @@ const createTask = async (task: Omit<Task, 'id'>) => {
   try {
     await createTaskAsync(task)
   } catch (err) {
-    console.error('Failed to create task', err)
+    error.value = err.message || 'Failed to create task.'
   } finally {
     isLoading.value = false
   }
@@ -106,7 +105,7 @@ const updateTask = async (task: Task): Promise<void> => {
   try {
     await updateTaskAsync(task)
   } catch (err) {
-    console.error('Failed to update task', err)
+    error.value = err.message || 'Failed to update task.'
   } finally {
     isLoading.value = false
   }
@@ -121,7 +120,7 @@ const removeTask = async (taskId: number): Promise<void> => {
   try {
     await removeTaskAsync(taskId)
   } catch (err) {
-    console.error('Failed to remove task', err)
+    error.value = err.message || 'Failed to remove task.'
   } finally {
     isLoading.value = false
   }
@@ -135,7 +134,7 @@ const fetchTasks = async () => {
   try {
     tasks.value = await fetchTasksByProjectIdAsync(projectId)
   } catch (err) {
-    console.error('Failed to fetch tasks', err)
+    error.value = err.message || 'Failed to fetch tasks.'
   } finally {
     isLoading.value = false
   }
@@ -158,6 +157,7 @@ const toggleSort = (field: SortField) => {
 <template>
   <section class="container">
     <AppLoader v-if="isLoading" />
+    <ErrorBanner v-if="error" :message="error" />
     <div class="project-header flex justify-between align-center">
       <div class="flex align-center">
         <BaseButton

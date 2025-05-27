@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { setupMocks } from '@/api/mock'
+import { showToast } from '@/utils/toast'
 
 import App from './App.vue'
 import router from './router'
@@ -20,4 +21,6 @@ app.mount('#app')
 
 setupMocks()
 
-app.config.idPrefix = 't-m-app'
+app.config.errorHandler = (err) => {
+  showToast(`Unexpected error: ${err}`, 'error')
+}
