@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTaskStore } from '@/stores/taskStore.ts'
 import AppLoader from '@/components/AppLoader.vue'
@@ -22,9 +22,18 @@ const tasks = ref<Task[]>([])
 const isLoading = ref(false)
 const isTaskModalOpen = ref(false)
 const editingTask = ref<Task | null>(null)
+const filters = ref({ priority: '', status: '' })
 
 onMounted(() => {
   fetchTasks()
+})
+
+const filteredTasks = computed(() => {
+  return tasks.value.filter((task) => {
+    const matchesPriority = !filters.value.priority || task.priority === filters.value.priority
+    const matchesStatus = !filters.value.status || task.status === filters.value.status
+    return matchesPriority && matchesStatus
+  })
 })
 
 const projectId = Number(route.params.id)
@@ -103,6 +112,10 @@ const fetchTasks = async () => {
     isLoading.value = false
   }
 }
+
+const updateFilters = (payload: typeof filters.value) => {
+  filters.value = payload
+}
 </script>
 
 <template>
@@ -130,12 +143,12 @@ const fetchTasks = async () => {
     </div>
 
     <div class="task-filters">
-      <TaskFilters />
+      <TaskFilters @update-filters="updateFilters" />
     </div>
 
     <TaskTable
-      v-if="tasks.length > 0"
-      :tasks="tasks"
+      v-if="filteredTasks.length > 0"
+      :tasks="filteredTasks"
       @edit-task="openEditModal"
       @remove-task="removeTask"
     />

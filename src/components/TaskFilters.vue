@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import { TaskPriorities, TaskStatuses } from '@/types/task'
 
+const emit = defineEmits<{
+  (e: 'updateFilters', filters: { priority: string; status: string }): void
+}>()
+
 const selectedPriority = ref('')
 const selectedStatus = ref('')
+
+watch([selectedPriority, selectedStatus], () => {
+  emit('updateFilters', {
+    priority: selectedPriority.value,
+    status: selectedStatus.value,
+  })
+})
 
 const resetFilters = () => {
   selectedPriority.value = ''
