@@ -46,6 +46,18 @@ const goToProjects = () => {
 </template>
 
 <style scoped>
+.home-view {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 32px 0;
+
+  &.centered {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .welcome-wrap {
   text-align: center;
   padding: 32px 0;

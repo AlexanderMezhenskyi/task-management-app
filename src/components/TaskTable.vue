@@ -54,7 +54,7 @@ const emit = defineEmits<{
           </span>
         </BaseButton>
       </div>
-      <div>Due Date</div>
+      <div>Due date</div>
       <div>Actions</div>
     </div>
 
@@ -77,7 +77,6 @@ const emit = defineEmits<{
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr auto;
   padding: 16px;
-  border: 1px solid var(--color-border);
   border-radius: 6px;
   background-color: var(--color-hover);
 }

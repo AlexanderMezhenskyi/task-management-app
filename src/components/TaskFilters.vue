@@ -42,7 +42,7 @@ const resetFilters = () => {
     </div>
 
     <BaseButton variant="ghost" size="sm" no-padding @click="resetFilters">
-      Reset Filters
+      Reset filters
     </BaseButton>
   </div>
 </template>
