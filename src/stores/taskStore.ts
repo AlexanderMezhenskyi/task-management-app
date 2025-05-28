@@ -28,23 +28,23 @@ export const useTaskStore = defineStore(
     }
 
     // Async (API)
-    async function fetchTaskByIdAsync(taskId: number) {
+    const fetchTaskByIdAsync = async (taskId: number) => {
       return await taskApi.fetchTaskById(taskId)
     }
 
-    async function fetchTasksByProjectIdAsync(projectId: number) {
+    const fetchTasksByProjectIdAsync = async (projectId: number) => {
       return await taskApi.fetchTaskByProjectId(projectId)
     }
 
-    async function createTaskAsync(task: Omit<Task, 'id'>) {
+    const createTaskAsync = async (task: Omit<Task, 'id'>) => {
       await taskApi.createTask(task)
     }
 
-    async function updateTaskAsync(task: Task) {
+    const updateTaskAsync = async (task: Task) => {
       await taskApi.updateTask(task)
     }
 
-    async function removeTaskAsync(id: number) {
+    const removeTaskAsync = async (id: number) => {
       await taskApi.removeTask(id)
     }
 

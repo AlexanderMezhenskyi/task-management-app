@@ -2,8 +2,25 @@ import MockAdapter from 'axios-mock-adapter'
 import api from '@/api/axios'
 import { useTaskStore } from '@/stores/taskStore'
 
-export function setupMocks() {
+export const setupMocks = () => {
   const mock = new MockAdapter(api as any, { delayResponse: 300 })
+
+  // POST /login
+  mock.onPost('/login').reply((config) => {
+    const { email, password } = JSON.parse(config.data)
+
+    if (email === 'john.doe@example.com' && password === 'johndoe-password') {
+      const fakeToken = btoa(JSON.stringify({ userId: 1, email: 'john.doe@example.com' }))
+      return [200, { token: fakeToken }]
+    }
+
+    return [401, { message: 'Invalid credentials' }]
+  })
+
+  // POST /logout
+  mock.onPost('/logout').reply(() => {
+    return [200]
+  })
 
   // GET /tasks/:id
   mock.onGet(/\/tasks\/\d+/).reply((config) => {

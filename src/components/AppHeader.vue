@@ -1,11 +1,29 @@
 <script setup lang="ts">
-import BaseButton from '@/components/BaseButton.vue'
-import AuthorizationModal from '@/components/AuthorizationModal.vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
+import AuthorizationModal from '@/components/AuthorizationModal.vue'
+import BaseButton from '@/components/BaseButton.vue'
+
+const router = useRouter()
+
+const auth = useAuthStore()
+const { logout } = auth
+const { isAuthenticated } = storeToRefs(auth)
 
 const showLogin = ref(false)
 const openLogin = () => (showLogin.value = true)
 const closeLogin = () => (showLogin.value = false)
+
+const authClick = () => {
+  if (isAuthenticated) {
+    logout()
+    router.push({ name: 'home' })
+  } else {
+    openLogin()
+  }
+}
 </script>
 
 <template>
@@ -15,18 +33,18 @@ const closeLogin = () => (showLogin.value = false)
         <RouterLink to="/" class="title-link flex align-center"> Task Management </RouterLink>
         <div class="flex align-center">
           <nav class="nav flex align-center justify-end">
-            <ul class="nav-links flex">
+            <ul class="nav-links flex align-center">
               <li><RouterLink to="/">Home</RouterLink></li>
-              <li><RouterLink to="/projects">Projects</RouterLink></li>
+              <li v-if="isAuthenticated"><RouterLink to="/projects">Projects</RouterLink></li>
             </ul>
           </nav>
           <BaseButton
             class="sign-in-button"
             size="sm"
             :bg-color="'var(--color-primary-dark)'"
-            @click-button="openLogin"
+            @click-button="authClick"
           >
-            Sign in
+            {{ isAuthenticated ? 'Sign out' : 'Sign in' }}
           </BaseButton>
         </div>
       </div>

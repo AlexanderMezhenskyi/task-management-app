@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { authGuard } from '@/router/guards/authGuard'
 
 const HomeView = () => import('@/views/HomeView.vue')
 const ProjectsView = () => import('@/views/ProjectsView.vue')
@@ -17,11 +18,13 @@ const router = createRouter({
       path: '/projects',
       name: 'projects',
       component: ProjectsView,
+      meta: { requiresAuth: true },
     },
     {
       path: '/projects/:id',
       name: 'projectDetails',
       component: ProjectDetailsView,
+      meta: { requiresAuth: true },
     },
     {
       path: '/:pathMatch(.*)*',
@@ -30,5 +33,7 @@ const router = createRouter({
     },
   ],
 })
+
+router.beforeEach(authGuard)
 
 export default router

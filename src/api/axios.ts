@@ -1,5 +1,6 @@
 import axios from 'axios'
 import router from '@/router'
+import { useAuthStore } from '@/stores/authStore'
 import { showToast } from '@/utils/toast'
 
 const api = axios.create({
@@ -8,8 +9,10 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  const auth = useAuthStore()
+  if (auth.token) {
+    config.headers.Authorization = `Bearer ${auth.token}`
+  }
   return config
 })
 
@@ -20,8 +23,8 @@ api.interceptors.response.use(
     const message = error.response?.data?.message || error.message
 
     if (status === 401) {
-      showToast('Unauthorized. Redirecting to Home.', 'error')
-      localStorage.removeItem('token')
+      const auth = useAuthStore()
+      auth.logout()
       await router.push('/')
     }
 

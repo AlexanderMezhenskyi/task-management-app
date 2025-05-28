@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
+import AuthorizationModal from '@/components/AuthorizationModal.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import ProjectList from '@/components/ProjectList.vue'
-import AuthorizationModal from '@/components/AuthorizationModal.vue'
+
+const auth = useAuthStore()
+const { isAuthenticated } = storeToRefs(auth)
 
 const showLogin = ref(false)
 const openLogin = () => (showLogin.value = true)
@@ -14,7 +19,7 @@ const closeLogin = () => (showLogin.value = false)
     <div class="welcome-wrap">
       <h1>Welcome to Task Management App</h1>
       <p>Manage your projects, tasks and deadlines — all in one place.</p>
-      <BaseButton @click-button="openLogin">Sign in</BaseButton>
+      <BaseButton v-if="!isAuthenticated" @click-button="openLogin">Sign in</BaseButton>
     </div>
 
     <div class="recent-projects">
