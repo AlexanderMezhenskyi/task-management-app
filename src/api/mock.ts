@@ -1,5 +1,7 @@
+import { toRaw } from 'vue'
 import MockAdapter from 'axios-mock-adapter'
 import api from '@/api/axios'
+import { useProjectStore } from '@/stores/projectStore'
 import { useTaskStore } from '@/stores/taskStore'
 
 export const setupMocks = () => {
@@ -30,7 +32,7 @@ export const setupMocks = () => {
     return task ? [200, task] : [404]
   })
 
-  // GET /tasks/:id
+  // GET /projects/:id/tasks
   mock.onGet(/\/projects\/\d+\/tasks/).reply((config) => {
     const projectId = Number(config.url?.match(/\/projects\/(\d+)/)?.[1])
     const store = useTaskStore()
@@ -59,6 +61,45 @@ export const setupMocks = () => {
     const id = Number(config.url?.split('/').pop())
     const store = useTaskStore()
     store.removeTask(id)
+    return [204]
+  })
+
+  // GET /projects
+  mock.onGet('projects').reply(() => {
+    const store = useProjectStore()
+    const projects = JSON.parse(JSON.stringify(toRaw(store.projects)))
+    return [200, projects]
+  })
+
+  // GET /projects/:id
+  mock.onGet(/\/projects\/\d+/).reply((config) => {
+    const projectId = Number(config.url?.split('/').pop())
+    const store = useProjectStore()
+    const project = store.projects.find((project) => project.id === projectId)
+    return project ? [200, project] : [404]
+  })
+
+  // POST /projects
+  mock.onPost('/projects').reply((config) => {
+    const store = useProjectStore()
+    const payload = JSON.parse(config.data)
+    const created = store.createProject(payload)
+    return [201, created]
+  })
+
+  // PUT /projects/:id
+  mock.onPut(/\/projects\/\d+/).reply((config) => {
+    const store = useProjectStore()
+    const payload = JSON.parse(config.data)
+    store.updateProject(payload)
+    return [200]
+  })
+
+  // DELETE /projects/:id
+  mock.onDelete(/\/projects\/\d+/).reply((config) => {
+    const id = Number(config.url?.split('/').pop())
+    const store = useProjectStore()
+    store.removeProject(id)
     return [204]
   })
 }
