@@ -1,0 +1,1 @@
+import{P as e}from"./ProjectList-ZyM0Gmcq.js";import{d as o,b as t,o as r}from"./index-1Rb8skfy.js";import"./helpers-A0hbnOU_.js";const _=o({__name:"ProjectsView",setup(s){return(a,c)=>(r(),t(e))}});export{_ as default};
