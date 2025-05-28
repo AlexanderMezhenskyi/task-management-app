@@ -1,81 +1,158 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/authStore'
+import { useProjectStore } from '@/stores/projectStore'
+import { useTaskStore } from '@/stores/taskStore'
+import AppLoader from '@/components/AppLoader.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import EmptyState from '@/components/EmptyState.vue'
-import { formatDate } from '@/utils/helpers.ts'
+import ErrorBanner from '@/components/ErrorBanner.vue'
+import ProjectModal from '@/components/ProjectModal.vue'
+import ProjectTable from '@/components/ProjectTable.vue'
 import type { Project } from '@/types/project'
 
-const router = useRouter()
+const route = useRoute()
+const isProjectsRoute = route.name === 'projects'
+
+const { fetchProjectsAllAsync, createProjectAsync, updateProjectAsync, removeProjectAsync } =
+  useProjectStore()
 
 const auth = useAuthStore()
 const { isAuthenticated } = storeToRefs(auth)
 
-const projects: Project[] = [
-  { id: 1, name: 'Website redesign', dueDate: '2025-06-10' },
-  { id: 2, name: 'Mobile app launch', dueDate: '2025-07-01' },
-  { id: 3, name: 'Marketing campaign', dueDate: '2025-05-30' },
-]
+const projects = ref<Project[]>([])
+const isLoading = ref(false)
+const isProjectModalOpen = ref(false)
+const editingProject = ref<Project | null>(null)
+const error = ref('')
 
-const goToProjectDetails = (id: number) => {
-  router.push({ name: 'projectDetails', params: { id } })
+onMounted(() => {
+  fetchProjects()
+})
+
+const openCreateModal = () => {
+  editingProject.value = null
+  isProjectModalOpen.value = true
+}
+
+const openEditModal = (project: Project) => {
+  editingProject.value = project
+  isProjectModalOpen.value = true
+}
+
+const closeProjectModal = () => {
+  isProjectModalOpen.value = false
+}
+
+const createProject = async (project: Omit<Project, 'id'>) => {
+  isLoading.value = true
+
+  try {
+    await createProjectAsync(project)
+    await fetchProjects()
+  } catch (err) {
+    error.value = err.message || 'Failed to create project.'
+  } finally {
+    isLoading.value = false
+    closeProjectModal()
+  }
+}
+
+const updateProject = async (project: Project): Promise<void> => {
+  isLoading.value = true
+
+  try {
+    await updateProjectAsync(project)
+    await fetchProjects()
+  } catch (err) {
+    error.value = err.message || 'Failed to update project.'
+  } finally {
+    isLoading.value = false
+    closeProjectModal()
+  }
+}
+
+const removeProject = async (projectId: number): Promise<void> => {
+  const taskStore = useTaskStore()
+  const { removeTaskAsync } = taskStore
+  const tasksToRemove = taskStore.tasks.filter((task) => task.projectId === projectId)
+  let promises = []
+
+  isLoading.value = true
+
+  try {
+    await removeProjectAsync(projectId)
+
+    promises = tasksToRemove.map((task) => removeTaskAsync(task.id))
+    await Promise.all(promises)
+
+    await fetchProjects()
+  } catch (err) {
+    error.value = err.message || 'Failed to remove project.'
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const fetchProjects = async () => {
+  isLoading.value = true
+
+  try {
+    projects.value = await fetchProjectsAllAsync()
+  } catch (err) {
+    error.value = err.message || 'Failed to fetch projects.'
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
 <template>
   <section class="container">
-    <div
-      v-if="projects.length > 0"
-      class="project-list flex column"
-      :class="{ 'not-authenticated': !isAuthenticated }"
-    >
-      <div class="project-header align-center">
-        <div>Project name</div>
-        <div>Due date</div>
-        <div></div>
-      </div>
+    <AppLoader v-if="isLoading" />
+    <ErrorBanner v-if="error" :message="error" />
 
-      <div v-for="project in projects" :key="project.id" class="project-row align-center">
-        <div class="project-name">{{ project.name }}</div>
-        <div class="project-date">{{ formatDate(project.dueDate) }}</div>
-        <div class="project-actions">
-          <BaseButton v-if="isAuthenticated" @click-button="goToProjectDetails(project.id)"
-            >View</BaseButton
-          >
-        </div>
-      </div>
+    <div v-if="isProjectsRoute" class="project-page-header flex justify-between align-center">
+      <h1>Projects</h1>
+      <BaseButton v-if="isAuthenticated && projects.length > 0" @click-button="openCreateModal">
+        Create project
+      </BaseButton>
     </div>
 
-    <EmptyState v-else title="No projects yet" message="Start by creating your first project." />
+    <ProjectTable
+      v-if="projects.length > 0"
+      :projects="projects"
+      @edit-project="openEditModal"
+      @remove-project="removeProject"
+    />
+    <template v-else>
+      <EmptyState
+        v-if="isProjectsRoute"
+        title="No projects yet"
+        message="Start by creating your first project."
+      >
+        <template #action>
+          <BaseButton v-if="isAuthenticated" @click-button="openCreateModal">
+            Create project
+          </BaseButton>
+        </template>
+      </EmptyState>
+    </template>
+
+    <ProjectModal
+      v-if="isProjectModalOpen"
+      :project-to-edit="editingProject"
+      @close="closeProjectModal"
+      @create="createProject"
+      @update="updateProject"
+    />
   </section>
 </template>
 
 <style scoped>
-.project-list {
-  gap: 16px;
-}
-
-.project-row,
-.project-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 100px;
-  padding: 16px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-
-  .not-authenticated & {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.project-header {
-  font-weight: bold;
-  background-color: var(--color-hover);
-  border: none;
-
-  @media (max-width: 640px) {
-    display: none;
-  }
+.project-page-header {
+  margin-bottom: 24px;
 }
 </style>

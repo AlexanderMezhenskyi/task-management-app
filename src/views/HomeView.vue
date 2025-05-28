@@ -1,28 +1,42 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/authStore'
+import { useProjectStore } from '@/stores/projectStore'
 import AuthorizationModal from '@/components/AuthorizationModal.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import ProjectList from '@/components/ProjectList.vue'
 
+const router = useRouter()
+
 const auth = useAuthStore()
 const { isAuthenticated } = storeToRefs(auth)
+
+const projectStore = useProjectStore()
+const { projects } = storeToRefs(projectStore)
 
 const showLogin = ref(false)
 const openLogin = () => (showLogin.value = true)
 const closeLogin = () => (showLogin.value = false)
+
+const goToProjects = () => {
+  router.push({ name: 'projects' })
+}
 </script>
 
 <template>
-  <section class="home-view container">
+  <section class="home-view container" :class="{ centered: projects.length === 0 }">
     <div class="welcome-wrap">
       <h1>Welcome to Task Management App</h1>
       <p>Manage your projects, tasks and deadlines — all in one place.</p>
-      <BaseButton v-if="!isAuthenticated" @click-button="openLogin">Sign in</BaseButton>
+      <div>
+        <BaseButton v-if="!isAuthenticated" @click-button="openLogin">Sign in</BaseButton>
+        <BaseButton v-else @click-button="goToProjects">Go to projects</BaseButton>
+      </div>
     </div>
 
-    <div class="recent-projects">
+    <div v-if="projects.length > 0" class="recent-projects">
       <h2>Recent projects</h2>
       <ProjectList />
     </div>
