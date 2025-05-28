@@ -66,7 +66,7 @@ const sortedTasks = computed(() => {
 const projectId = Number(route.params.id)
 const project = {
   id: projectId,
-  name: 'Website Redesign',
+  title: 'Website Redesign',
   dueDate: '2025-06-10',
 }
 
@@ -89,14 +89,13 @@ const createTask = async (task: Omit<Task, 'id'>) => {
 
   try {
     await createTaskAsync(task)
+    await fetchTasks()
   } catch (err) {
     error.value = err.message || 'Failed to create task.'
   } finally {
     isLoading.value = false
+    closeTaskModal()
   }
-
-  await fetchTasks()
-  closeTaskModal()
 }
 
 const updateTask = async (task: Task): Promise<void> => {
@@ -104,14 +103,13 @@ const updateTask = async (task: Task): Promise<void> => {
 
   try {
     await updateTaskAsync(task)
+    await fetchTasks()
   } catch (err) {
     error.value = err.message || 'Failed to update task.'
   } finally {
     isLoading.value = false
+    closeTaskModal()
   }
-
-  await fetchTasks()
-  closeTaskModal()
 }
 
 const removeTask = async (taskId: number): Promise<void> => {
@@ -119,13 +117,12 @@ const removeTask = async (taskId: number): Promise<void> => {
 
   try {
     await removeTaskAsync(taskId)
+    await fetchTasks()
   } catch (err) {
     error.value = err.message || 'Failed to remove task.'
   } finally {
     isLoading.value = false
   }
-
-  await fetchTasks()
 }
 
 const fetchTasks = async () => {
@@ -171,7 +168,7 @@ const toggleSort = (field: SortField) => {
         </BaseButton>
 
         <h1 class="project-title">
-          Project: {{ project.name }}
+          Project: {{ project.title }}
           <span class="project-dueDate">(Due: {{ formatDate(project.dueDate) }})</span>
         </h1>
       </div>
