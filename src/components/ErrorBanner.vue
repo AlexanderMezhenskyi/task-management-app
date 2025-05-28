@@ -14,7 +14,7 @@ const close = () => (visible.value = false)
 
 <template>
   <div v-if="visible" class="error-banner flex align-center">
-    <AlertIcon />
+    <div><AlertIcon /></div>
     {{ message }}
     <BaseButton
       class="close-btn cursor"
