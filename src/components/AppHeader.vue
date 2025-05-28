@@ -17,7 +17,7 @@ const openLogin = () => (showLogin.value = true)
 const closeLogin = () => (showLogin.value = false)
 
 const authClick = () => {
-  if (isAuthenticated) {
+  if (isAuthenticated.value) {
     logout()
     router.push({ name: 'home' })
   } else {
