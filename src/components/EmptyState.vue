@@ -19,9 +19,9 @@ defineProps<{
 <style scoped>
 .empty-state {
   gap: 12px;
-  padding: 40px 20px;
+  padding: 40px;
   border: 2px dashed var(--color-border);
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: var(--color-surface);
   color: var(--color-text-light);
 }
@@ -33,13 +33,15 @@ defineProps<{
 }
 
 .empty-title {
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--color-text);
+  margin-bottom: 8px;
 }
 
 .empty-message {
   max-width: 300px;
-  font-size: 14px;
+  color: var(--color-text-light);
+  margin-bottom: 16px;
 }
 </style>
