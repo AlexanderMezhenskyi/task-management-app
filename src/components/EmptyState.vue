@@ -12,6 +12,7 @@ defineProps<{
     <InboxIcon class="empty-icon" />
     <h2 class="empty-title">{{ title }}</h2>
     <p class="empty-message">{{ message }}</p>
+    <slot name="action" />
   </div>
 </template>
 
