@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useProjectStore } from '@/stores/projectStore.ts'
 import { useTaskStore } from '@/stores/taskStore.ts'
 import AppLoader from '@/components/AppLoader.vue'
 import BaseButton from '@/components/BaseButton.vue'
@@ -11,6 +12,7 @@ import TaskModal from '@/components/TaskModal.vue'
 import TaskTable from '@/components/TaskTable.vue'
 import { formatDate } from '@/utils/helpers.ts'
 import { notifyError, notifySuccess } from '@/utils/toast'
+import type { Project } from '@/types/project'
 import type { SortField } from '@/types/sort'
 import type { SortOption } from '@/types/sort'
 import type { Task } from '@/types/task'
@@ -18,10 +20,12 @@ import type { Task } from '@/types/task'
 const route = useRoute()
 const router = useRouter()
 
+const { fetchProjectByIdAsync } = useProjectStore()
 const { fetchTasksByProjectIdAsync, createTaskAsync, updateTaskAsync, removeTaskAsync } =
   useTaskStore()
 
 const tasks = ref<Task[]>([])
+const project = ref<Project | null>(null)
 const isLoading = ref(false)
 const isTaskModalOpen = ref(false)
 const editingTask = ref<Task | null>(null)
@@ -30,9 +34,7 @@ const priorityOrder = ['High', 'Medium', 'Low']
 const statusOrder = ['Completed', 'In Progress', 'Pending']
 const sort = ref<SortOption>({ field: '', direction: 'asc' })
 
-onMounted(() => {
-  fetchTasks()
-})
+onMounted(async () => await fetchProject())
 
 const filteredTasks = computed(() => {
   return tasks.value.filter((task) => {
@@ -63,11 +65,6 @@ const sortedTasks = computed(() => {
 })
 
 const projectId = Number(route.params.id)
-const project = {
-  id: projectId,
-  title: 'Website Redesign',
-  dueDate: '2025-06-10',
-}
 
 const openCreateModal = () => {
   editingTask.value = null
@@ -139,6 +136,15 @@ const fetchTasks = async () => {
   }
 }
 
+const fetchProject = async () => {
+  try {
+    project.value = await fetchProjectByIdAsync(projectId)
+    await fetchTasks()
+  } catch (err) {
+    notifyError('Failed to fetch project.')
+  }
+}
+
 const updateFilters = (payload: typeof filters.value) => {
   filters.value = payload
 }
@@ -168,7 +174,7 @@ const toggleSort = (field: SortField) => {
           <CircleArrowLeftIcon />
         </BaseButton>
 
-        <h1 class="project-title">
+        <h1 v-if="project" class="project-title">
           Project: {{ project.title }}
           <span class="project-dueDate">(Due: {{ formatDate(project.dueDate) }})</span>
         </h1>
