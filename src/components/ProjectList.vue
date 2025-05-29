@@ -8,9 +8,9 @@ import { useTaskStore } from '@/stores/taskStore'
 import AppLoader from '@/components/AppLoader.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import EmptyState from '@/components/EmptyState.vue'
-import ErrorBanner from '@/components/ErrorBanner.vue'
 import ProjectModal from '@/components/ProjectModal.vue'
 import ProjectTable from '@/components/ProjectTable.vue'
+import { notifyError, notifySuccess } from '@/utils/toast'
 import type { Project } from '@/types/project'
 
 const route = useRoute()
@@ -26,7 +26,6 @@ const projects = ref<Project[]>([])
 const isLoading = ref(false)
 const isProjectModalOpen = ref(false)
 const editingProject = ref<Project | null>(null)
-const error = ref('')
 
 onMounted(() => {
   fetchProjects()
@@ -52,8 +51,9 @@ const createProject = async (project: Omit<Project, 'id'>) => {
   try {
     await createProjectAsync(project)
     await fetchProjects()
+    notifySuccess('Project created successfully.')
   } catch (err) {
-    error.value = err.message || 'Failed to create project.'
+    notifyError('Failed to create project.')
   } finally {
     isLoading.value = false
     closeProjectModal()
@@ -66,8 +66,9 @@ const updateProject = async (project: Project): Promise<void> => {
   try {
     await updateProjectAsync(project)
     await fetchProjects()
+    notifySuccess('Project updated successfully.')
   } catch (err) {
-    error.value = err.message || 'Failed to update project.'
+    notifyError('Failed to update project.')
   } finally {
     isLoading.value = false
     closeProjectModal()
@@ -89,8 +90,9 @@ const removeProject = async (projectId: number): Promise<void> => {
     await Promise.all(promises)
 
     await fetchProjects()
+    notifySuccess('Project deleted successfully.')
   } catch (err) {
-    error.value = err.message || 'Failed to remove project.'
+    notifyError('Failed to remove project.')
   } finally {
     isLoading.value = false
   }
@@ -102,7 +104,7 @@ const fetchProjects = async () => {
   try {
     projects.value = await fetchProjectsAllAsync()
   } catch (err) {
-    error.value = err.message || 'Failed to fetch projects.'
+    notifyError('Failed to fetch projects.')
   } finally {
     isLoading.value = false
   }
@@ -112,7 +114,6 @@ const fetchProjects = async () => {
 <template>
   <section class="container">
     <AppLoader v-if="isLoading" />
-    <ErrorBanner v-if="error" :message="error" />
 
     <div v-if="isProjectsRoute" class="project-page-header flex justify-between align-center">
       <h1>Projects</h1>

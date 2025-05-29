@@ -36,7 +36,7 @@ export const setupMocks = () => {
   mock.onGet(/\/projects\/\d+\/tasks/).reply((config) => {
     const projectId = Number(config.url?.match(/\/projects\/(\d+)/)?.[1])
     const store = useTaskStore()
-    const tasks = store.tasks.filter((task) => task.projectId === projectId)
+    const tasks = store.tasks.filter((task) => task.projectId === projectId) || []
     return [200, tasks]
   })
 

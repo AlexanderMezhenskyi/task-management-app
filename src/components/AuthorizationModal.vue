@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authStore.ts'
 import AppLoader from '@/components/AppLoader.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import CloseIcon from '@/components/icons/CloseIcon.vue'
-import ErrorBanner from '@/components/ErrorBanner.vue'
+import { notifyError, notifySuccess } from '@/utils/toast'
 
 const emit = defineEmits<{
   (e: 'close'): void
@@ -19,7 +19,6 @@ const { login, loginAsync } = useAuthStore()
 const email = ref('')
 const password = ref('')
 const isLoading = ref(false)
-const error = ref('')
 
 const isFormValid = computed(() => {
   return email.value.trim().length > 0 && password.value.trim().length > 0
@@ -34,10 +33,11 @@ const handleLogin = async () => {
     const token = await loginAsync(email.value, password.value)
     const redirect = route.query.redirect || '/'
     login(token)
+    notifySuccess('Signed in successfully')
     await router.push(redirect as string)
     emit('close')
   } catch (err) {
-    error.value = err.response.data.message || 'Sign in failed.'
+    notifyError(err.response.data.message || 'Sign in failed.')
   } finally {
     isLoading.value = false
   }
@@ -46,8 +46,7 @@ const handleLogin = async () => {
 
 <template>
   <AppLoader v-if="isLoading" />
-  <ErrorBanner v-if="error" :message="error" />
-  <div class="auth-modal flex justify-center align-center" @click.self="$emit('close')">
+  <div class="auth-modal flex justify-center align-center" @click.self="emit('close')">
     <div class="auth-modal-content">
       <div class="auth-modal-header flex justify-between align-center">
         <h2>Sign in</h2>

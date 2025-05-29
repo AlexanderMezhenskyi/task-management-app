@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '@/router'
 import { useAuthStore } from '@/stores/authStore'
-import { showToast } from '@/utils/toast'
+import { notifyError } from '@/utils/toast'
 
 const api = axios.create({
   baseURL: '/api',
@@ -29,7 +29,7 @@ api.interceptors.response.use(
     }
 
     if (status >= 500) {
-      showToast(`${message}` || 'Server error occurred. Try again later.', 'error')
+      notifyError(`${message}` || 'Server error occurred. Try again later.')
     }
 
     return Promise.reject(error)

@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/authStore'
 import AuthorizationModal from '@/components/AuthorizationModal.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import { notifySuccess } from '@/utils/toast.ts'
 
 const router = useRouter()
 
@@ -19,6 +20,7 @@ const closeLogin = () => (showLogin.value = false)
 const authClick = () => {
   if (isAuthenticated.value) {
     logout()
+    notifySuccess('Signed out successfully')
     router.push({ name: 'home' })
   } else {
     openLogin()
