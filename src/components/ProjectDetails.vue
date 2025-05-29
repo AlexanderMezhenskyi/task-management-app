@@ -10,7 +10,8 @@ import EmptyState from '@/components/EmptyState.vue'
 import TaskFilters from '@/components/TaskFilters.vue'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskTable from '@/components/TaskTable.vue'
-import { formatDate } from '@/utils/helpers.ts'
+import { useDueDateStatus } from '@/composables/useDueDateStatus'
+import { formatDate } from '@/utils/helpers'
 import { notifyError, notifySuccess } from '@/utils/toast'
 import type { Project } from '@/types/project'
 import type { SortField } from '@/types/sort'
@@ -63,6 +64,8 @@ const sortedTasks = computed(() => {
 
   return tasks
 })
+
+const dueDateClass = computed(() => useDueDateStatus(project.value?.dueDate ?? ''))
 
 const projectId = Number(route.params.id)
 
@@ -177,7 +180,10 @@ const toggleSort = (field: SortField) => {
 
         <h1 v-if="project" class="project-title">
           Project: {{ project.title }}
-          <span class="project-dueDate">(Due: {{ formatDate(project.dueDate) }})</span>
+          <span class="project-dueDate">
+            (Due:
+            <span :class="dueDateClass">{{ formatDate(project.dueDate) }}</span>)
+          </span>
         </h1>
       </div>
 

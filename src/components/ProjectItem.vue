@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/authStore'
 import BaseButton from '@/components/BaseButton.vue'
 import EditIcon from '@/components/icons/EditIcon.vue'
 import RemoveIcon from '@/components/icons/RemoveIcon.vue'
+import { useDueDateStatus } from '@/composables/useDueDateStatus'
 import { formatDate } from '@/utils/helpers'
 import type { Project } from '@/types/project'
 
-defineProps<{
+const props = defineProps<{
   project: Project
 }>()
 
@@ -22,6 +24,8 @@ const isProjectsRoute = route.name === 'projects'
 
 const auth = useAuthStore()
 const { isAuthenticated } = storeToRefs(auth)
+
+const dueDateClass = computed(() => useDueDateStatus(props.project.dueDate))
 </script>
 
 <template>
@@ -38,7 +42,9 @@ const { isAuthenticated } = storeToRefs(auth)
         <div v-else>{{ project.title }}</div>
       </div>
       <div class="mobile-view-wrap flex justify-between align-center">
-        <div>{{ formatDate(project.dueDate) }}</div>
+        <div :class="{ [dueDateClass]: isAuthenticated }">
+          {{ formatDate(project.dueDate) }}
+        </div>
         <div class="project-actions flex justify-end">
           <BaseButton
             v-if="isProjectsRoute"

@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import EditIcon from '@/components/icons/EditIcon.vue'
 import RemoveIcon from '@/components/icons/RemoveIcon.vue'
+import StatusBadge from '@/components/StatusBadge.vue'
+import { useDueDateStatus } from '@/composables/useDueDateStatus'
 import { formatDate } from '@/utils/helpers'
 import type { Task } from '@/types/task'
-import StatusBadge from '@/components/StatusBadge.vue'
 
-defineProps<{
+const props = defineProps<{
   task: Task
 }>()
 
@@ -14,6 +16,8 @@ const emit = defineEmits<{
   (e: 'edit-task'): void
   (e: 'remove-task'): void
 }>()
+
+const dueDateClass = computed(() => useDueDateStatus(props.task.dueDate))
 </script>
 
 <template>
@@ -25,7 +29,7 @@ const emit = defineEmits<{
         <div><StatusBadge :label="task.status" type="status" /></div>
       </div>
       <div class="mobile-view-wrap flex justify-between align-center">
-        <div>{{ formatDate(task.dueDate) }}</div>
+        <div :class="dueDateClass">{{ formatDate(task.dueDate) }}</div>
         <div class="task-actions flex justify-end">
           <BaseButton
             size="sm"
