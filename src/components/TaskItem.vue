@@ -4,6 +4,7 @@ import EditIcon from '@/components/icons/EditIcon.vue'
 import RemoveIcon from '@/components/icons/RemoveIcon.vue'
 import { formatDate } from '@/utils/helpers'
 import type { Task } from '@/types/task'
+import StatusBadge from '@/components/StatusBadge.vue'
 
 defineProps<{
   task: Task
@@ -20,8 +21,8 @@ const emit = defineEmits<{
     <div class="task-row align-center">
       <div>{{ task.title }}</div>
       <div class="mobile-view-wrap flex justify-between align-center">
-        <div>{{ task.priority }}</div>
-        <div>{{ task.status }}</div>
+        <div><StatusBadge :label="task.priority" type="priority" /></div>
+        <div><StatusBadge :label="task.status" type="status" /></div>
       </div>
       <div class="mobile-view-wrap flex justify-between align-center">
         <div>{{ formatDate(task.dueDate) }}</div>

@@ -36,6 +36,24 @@
   --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1536px;
+
+  --priority-low-bg: #e0f7fa;
+  --priority-low-text: #00796b;
+
+  --priority-medium-bg: #fff9c4;
+  --priority-medium-text: #f57f17;
+
+  --priority-high-bg: #ffebee;
+  --priority-high-text: #c62828;
+
+  --status-pending-bg: #f3e5f5;
+  --status-pending-text: #6a1b9a;
+
+  --status-in-progress-bg: #e3f2fd;
+  --status-in-progress-text: #1565c0;
+
+  --status-completed-bg: #e8f5e9;
+  --status-completed-text: #2e7d32;
 }
 
 *,
