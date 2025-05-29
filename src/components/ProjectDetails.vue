@@ -162,9 +162,10 @@ const toggleSort = (field: SortField) => {
 <template>
   <section class="container">
     <AppLoader v-if="isLoading" />
-    <div class="project-header flex justify-between align-center">
-      <div class="flex align-center">
+    <div class="project-header flex justify-between align-start">
+      <div class="project-title-wrap flex align-start">
         <BaseButton
+          class="back-button"
           no-padding
           variant="ghost"
           size="sm"
@@ -180,7 +181,9 @@ const toggleSort = (field: SortField) => {
         </h1>
       </div>
 
-      <BaseButton @click-button="openCreateModal">Create task</BaseButton>
+      <BaseButton class="create-task-button" @click-button="openCreateModal"
+        >Create task</BaseButton
+      >
     </div>
 
     <div class="task-filters">
@@ -213,14 +216,34 @@ const toggleSort = (field: SortField) => {
 
 <style scoped>
 .project-header {
-  flex-wrap: wrap;
   margin-bottom: 24px;
+
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+  }
+}
+
+.project-title-wrap {
+  @media (max-width: 640px) {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}
+
+.back-button {
+  margin-top: 2px;
+}
+
+.create-task-button {
+  @media (max-width: 640px) {
+    margin: 0 auto;
+  }
 }
 
 .project-title {
   font-weight: 500;
   color: var(--color-text);
-  margin-left: 8px;
+  margin: 0 8px;
 }
 
 .project-dueDate {

@@ -48,6 +48,7 @@ const inlineStyle = computed(() => ({
   border: none;
   cursor: pointer;
   border-radius: 6px;
+  white-space: nowrap;
   transition: background-color 0.2s ease;
 
   &:disabled {

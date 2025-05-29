@@ -37,28 +37,30 @@ const { isAuthenticated } = storeToRefs(auth)
         </RouterLink>
         <div v-else>{{ project.title }}</div>
       </div>
-      <div>{{ formatDate(project.dueDate) }}</div>
-      <div class="project-actions flex justify-end">
-        <BaseButton
-          v-if="isProjectsRoute"
-          size="sm"
-          variant="ghost"
-          no-padding
-          :text-color="'var(--color-text)'"
-          @click-button="emit('edit-project')"
-        >
-          <EditIcon />
-        </BaseButton>
-        <BaseButton
-          v-if="isProjectsRoute"
-          size="sm"
-          variant="ghost"
-          no-padding
-          :text-color="'var(--color-text)'"
-          @click-button="emit('remove-project')"
-        >
-          <RemoveIcon />
-        </BaseButton>
+      <div class="mobile-view-wrap flex justify-between align-center">
+        <div>{{ formatDate(project.dueDate) }}</div>
+        <div class="project-actions flex justify-end">
+          <BaseButton
+            v-if="isProjectsRoute"
+            size="sm"
+            variant="ghost"
+            no-padding
+            :text-color="'var(--color-text)'"
+            @click-button="emit('edit-project')"
+          >
+            <EditIcon />
+          </BaseButton>
+          <BaseButton
+            v-if="isProjectsRoute"
+            size="sm"
+            variant="ghost"
+            no-padding
+            :text-color="'var(--color-text)'"
+            @click-button="emit('remove-project')"
+          >
+            <RemoveIcon />
+          </BaseButton>
+        </div>
       </div>
     </div>
   </div>
@@ -96,7 +98,7 @@ const { isAuthenticated } = storeToRefs(auth)
 }
 
 .project-actions {
-  gap: 8px;
+  gap: 16px;
 
   @media (max-width: 640px) {
     justify-self: start;
@@ -105,6 +107,14 @@ const { isAuthenticated } = storeToRefs(auth)
   svg {
     width: 16px;
     height: 16px;
+  }
+}
+
+.mobile-view-wrap {
+  gap: 16px;
+
+  @media (min-width: 641px) {
+    display: contents;
   }
 }
 </style>

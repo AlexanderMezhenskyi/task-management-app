@@ -60,7 +60,7 @@ const goToProjects = () => {
 
 .welcome-wrap {
   text-align: center;
-  padding: 32px 0;
+  padding: 32px 16px;
   margin-bottom: 32px;
 
   h1 {

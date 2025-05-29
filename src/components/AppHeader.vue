@@ -31,9 +31,9 @@ const authClick = () => {
 <template>
   <header class="header">
     <section class="container">
-      <div class="flex justify-between align-center">
+      <div class="header-content flex justify-between align-center">
         <RouterLink to="/" class="title-link flex align-center"> Task Management </RouterLink>
-        <div class="flex align-center">
+        <div class="header-nav flex align-center">
           <nav class="nav flex align-center justify-end">
             <ul class="nav-links flex align-center">
               <li><RouterLink to="/">Home</RouterLink></li>
@@ -63,10 +63,32 @@ const authClick = () => {
   box-shadow: var(--shadow-default-bottom);
 }
 
+.header-content {
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+  }
+}
+
+.header-nav {
+  @media (max-width: 480px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
 .title-link {
   color: var(--color-text-inverted);
   font-weight: 500;
   font-size: 28px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 24px;
+  }
 }
 
 .nav-links {

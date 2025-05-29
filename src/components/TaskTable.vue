@@ -79,6 +79,10 @@ const emit = defineEmits<{
   padding: 16px;
   border-radius: 6px;
   background-color: var(--color-hover);
+
+  @media (max-width: 640px) {
+    display: none;
+  }
 }
 
 .task-sortable-column-title {

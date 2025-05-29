@@ -24,7 +24,7 @@ const resetFilters = () => {
 </script>
 
 <template>
-  <div class="task-filters flex align-center">
+  <div class="task-filters">
     <div class="form-group">
       <label class="form-label" for="priority">Priority:</label>
       <select id="priority" v-model="selectedPriority" class="form-select">
@@ -51,13 +51,28 @@ const resetFilters = () => {
 
 <style scoped>
 .task-filters {
+  display: flex;
+  align-items: center;
   font-size: 16px;
   gap: 12px;
+
+  @media (max-width: 580px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.form-label {
+  min-width: 55px;
 }
 
 .form-group {
   flex-direction: row;
   align-items: center;
   margin-bottom: 0;
+
+  @media (max-width: 580px) {
+    width: 100%;
+  }
 }
 </style>
