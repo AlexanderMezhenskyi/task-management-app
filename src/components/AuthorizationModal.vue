@@ -65,9 +65,7 @@ const handleLogin = async () => {
       <form class="flex column" @submit.prevent="handleLogin">
         <input v-model="email" type="email" placeholder="john.doe@example.com" required />
         <input v-model="password" type="password" placeholder="password" required />
-        <BaseButton type="submit" :disabled="!isFormValid" @click-button="handleLogin"
-          >Login</BaseButton
-        >
+        <BaseButton type="submit" :disabled="!isFormValid">Login</BaseButton>
       </form>
     </div>
   </div>
