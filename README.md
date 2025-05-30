@@ -105,3 +105,12 @@ yarn <script_name>
 
 The app simulates an API layer using mocked asynchronous functions.
 Error handling, async delays, and auth simulation are built-in.
+
+## Authentication
+
+This app uses fake authentication. To log in, use the following credentials:
+
+- **Email**: `john.doe@example.com`
+- **Password**: `johndoe-password`
+
+> Note: Authentication is mocked, no real backend is used.
