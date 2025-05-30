@@ -2,8 +2,9 @@ import axios from 'axios'
 import router from '@/router'
 import { useAuthStore } from '@/stores/authStore'
 import { notifyError } from '@/utils/toast'
+import type { AxiosInstance } from 'axios'
 
-const api = axios.create({
+const api: AxiosInstance = axios.create({
   baseURL: '/api',
   timeout: 1000,
 })

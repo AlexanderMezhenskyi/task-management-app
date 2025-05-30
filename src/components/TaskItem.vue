@@ -54,7 +54,8 @@ const dueDateClass = computed(() => useDueDateStatus(props.task.dueDate))
     </div>
 
     <div v-if="task.description" class="task-description">
-      <span class="task-description-title">Description:</span> {{ task.description }}
+      <span class="task-description-title">Description:</span>
+      {{ task.description }}
     </div>
   </div>
 </template>

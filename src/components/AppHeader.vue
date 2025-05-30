@@ -32,7 +32,7 @@ const authClick = () => {
   <header class="header">
     <section class="container">
       <div class="header-content flex justify-between align-center">
-        <RouterLink to="/" class="title-link flex align-center"> Task Management </RouterLink>
+        <RouterLink to="/" class="title-link flex align-center">Task Management</RouterLink>
         <div class="header-nav flex align-center">
           <nav class="nav flex align-center justify-end">
             <ul class="nav-links flex align-center">

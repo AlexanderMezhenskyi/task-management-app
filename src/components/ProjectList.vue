@@ -52,6 +52,7 @@ const createProject = async (project: Omit<Project, 'id'>) => {
     await createProjectAsync(project)
     await fetchProjects()
     notifySuccess('Project created successfully.')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to create project.')
   } finally {
@@ -67,6 +68,7 @@ const updateProject = async (project: Project): Promise<void> => {
     await updateProjectAsync(project)
     await fetchProjects()
     notifySuccess('Project updated successfully.')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to update project.')
   } finally {
@@ -91,6 +93,7 @@ const removeProject = async (projectId: number): Promise<void> => {
 
     await fetchProjects()
     notifySuccess('Project deleted successfully.')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to remove project.')
   } finally {
@@ -103,8 +106,10 @@ const fetchProjects = async () => {
 
   try {
     projects.value = await fetchProjectsAllAsync()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to fetch projects.')
+    projects.value = []
   } finally {
     isLoading.value = false
   }

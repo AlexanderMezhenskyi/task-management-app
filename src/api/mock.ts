@@ -5,7 +5,8 @@ import { useProjectStore } from '@/stores/projectStore'
 import { useTaskStore } from '@/stores/taskStore'
 
 export const setupMocks = () => {
-  const mock = new MockAdapter(api as any, { delayResponse: 300 })
+  // @ts-expect-error: api type is incompatible with axios-mock-adapter, but it's safe to use here
+  const mock = new MockAdapter(api, { delayResponse: 300 })
 
   // POST /login
   mock.onPost('/login').reply((config) => {

@@ -90,6 +90,7 @@ const createTask = async (task: Omit<Task, 'id'>) => {
     await createTaskAsync(task)
     await fetchTasks()
     notifySuccess('Task created successfully.')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to create task.')
   } finally {
@@ -105,6 +106,7 @@ const updateTask = async (task: Task): Promise<void> => {
     await updateTaskAsync(task)
     await fetchTasks()
     notifySuccess('Task updated successfully.')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to update task.')
   } finally {
@@ -120,6 +122,7 @@ const removeTask = async (taskId: number): Promise<void> => {
     await removeTaskAsync(taskId)
     await fetchTasks()
     notifySuccess('Task deleted successfully.')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to remove task.')
   } finally {
@@ -132,8 +135,10 @@ const fetchTasks = async () => {
 
   try {
     tasks.value = await fetchTasksByProjectIdAsync(projectId)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to fetch tasks.')
+    tasks.value = []
   } finally {
     isLoading.value = false
   }
@@ -143,6 +148,7 @@ const fetchProject = async () => {
   try {
     project.value = await fetchProjectByIdAsync(projectId)
     await fetchTasks()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     notifyError('Failed to fetch project.')
   }
@@ -182,14 +188,15 @@ const toggleSort = (field: SortField) => {
           Project: {{ project.title }}
           <span class="project-dueDate">
             (Due:
-            <span :class="dueDateClass">{{ formatDate(project.dueDate) }}</span>)
+            <span :class="dueDateClass">{{ formatDate(project.dueDate) }}</span>
+            )
           </span>
         </h1>
       </div>
 
-      <BaseButton class="create-task-button" @click-button="openCreateModal"
-        >Create task</BaseButton
-      >
+      <BaseButton class="create-task-button" @click-button="openCreateModal">
+        Create task
+      </BaseButton>
     </div>
 
     <div class="task-filters">
