@@ -61,7 +61,7 @@ const close = () => {
       <div class="project-modal-header flex justify-between align-center">
         <h2>{{ projectToEdit ? 'Edit project' : 'Create project' }}</h2>
         <BaseButton
-          class="cursor"
+          class="close-project-modal-button cursor"
           no-padding
           size="sm"
           variant="ghost"

@@ -36,8 +36,9 @@ const handleLogin = async () => {
     notifySuccess('Signed in successfully')
     await router.push(redirect as string)
     emit('close')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
-    notifyError(err.response.data.message || 'Sign in failed.')
+    notifyError('Invalid credentials.')
   } finally {
     isLoading.value = false
   }

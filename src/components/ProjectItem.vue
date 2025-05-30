@@ -51,6 +51,7 @@ const dueDateClass = computed(() => useDueDateStatus(props.project.dueDate))
             size="sm"
             variant="ghost"
             no-padding
+            class="edit-button"
             :text-color="'var(--color-text)'"
             @click-button="emit('edit-project')"
           >
@@ -61,6 +62,7 @@ const dueDateClass = computed(() => useDueDateStatus(props.project.dueDate))
             size="sm"
             variant="ghost"
             no-padding
+            class="remove-button"
             :text-color="'var(--color-text)'"
             @click-button="emit('remove-project')"
           >
